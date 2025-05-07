@@ -387,7 +387,7 @@ void function_a() {
 }
 
 /**
- * to access the data we need this external symbols the linker (ldd) 
+ * to access the data we need this external symbols the linker
  * will automatically create symbols for a section called __start_SECTION_NAME 
  * and __stop_SECTION_NAME however to satisfy the compiler we still need to 
  * declare the symbols as external here
@@ -463,6 +463,22 @@ struct MetaData _MY_DATA_3 META_DATA_SECTION = {
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

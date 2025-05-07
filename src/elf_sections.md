@@ -268,7 +268,7 @@ void function_a() {
 }
 
 /**
- * to access the data we need this external symbols the linker (ldd) 
+ * to access the data we need this external symbols the linker
  * will automatically create symbols for a section called __start_SECTION_NAME 
  * and __stop_SECTION_NAME however to satisfy the compiler we still need to 
  * declare the symbols as external here

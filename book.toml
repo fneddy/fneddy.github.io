@@ -5,6 +5,9 @@ multilingual = false
 src = "src"
 title = "a fabulous world"
 
+[build]
+build-dir = "docs" 
+
 [preprocessor.toc]
 command = "mdbook-toc"
 renderer = ["html"]
