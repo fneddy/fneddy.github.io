@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>imprint - a fabulous world</title>
+        <title>main - a fabulous world</title>
 
 
         <!-- Custom HTML head -->
@@ -155,31 +155,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="imprint-legal-disclosure"><a class="header" href="#imprint-legal-disclosure">Imprint (Legal Disclosure)</a></h1>
-<p>Information in accordance with <code>Section 5 TMG (German Telemedia Act)</code>:</p>
-<pre><code class="language-ignore">Eduard Stefes
-Emminger Str. 7
-71131 Jettingen
-Germany
-</code></pre>
-<p>E-Mail: <code>eduard.stefes@gmail.com</code></p>
-<p>Responsible for content according to <code>§ 55 Abs. 2 RStV</code>:</p>
-<pre><code class="language-ignore">Eduard Stefes
-Emminger Str. 7
-71131 Jettingen
-Germany
-</code></pre>
-<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer:</a></h2>
-<p>This is a private blog. It serves exclusively for sharing personal opinions and experiences and does not pursue any commercial interests.</p>
+                        <h1 id="main"><a class="header" href="#main">main</a></h1>
+<p><a href="./SUMMARY.html">main</a></p>
+<ul>
+<li><a href="./elf_sections.html">ELF Sections</a></li>
+</ul>
+<p><a href="./imprint.html">imprint</a></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="elf_sections.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
-                            </a>
 
+                            <a rel="next prefetch" href="elf_sections.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -187,30 +177,14 @@ Germany
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="elf_sections.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
 
+                    <a rel="next prefetch" href="elf_sections.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
