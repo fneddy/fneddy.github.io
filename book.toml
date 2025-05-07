@@ -1,0 +1,10 @@
+[book]
+authors = ["Eddy (Eduard) Stefes"]
+language = "en"
+multilingual = false
+src = "src"
+title = "a fabulous world"
+
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]
