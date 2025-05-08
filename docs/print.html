@@ -160,6 +160,7 @@
 <p><a href="./SUMMARY.html">main</a></p>
 <ul>
 <li><a href="./elf_sections.html">ELF Sections</a></li>
+<li><a href="./rust_array_init.html">Rust fixed size Array init</a></li>
 </ul>
 <p><a href="./imprint.html">imprint</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="toc"><a class="header" href="#toc">TOC</a></h1>
@@ -440,7 +441,81 @@ struct MetaData _MY_DATA_3 META_DATA_SECTION = {
 <li id="footnote-namespace">
 <p>namespace in the sense of a c link unit, not a C++ namespace. <a href="#fr-namespace-1">↩</a></p>
 </li>
-</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="imprint-legal-disclosure"><a class="header" href="#imprint-legal-disclosure">Imprint (Legal Disclosure)</a></h1>
+</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="toc-1"><a class="header" href="#toc-1">TOC</a></h1>
+<ul>
+<li><a href="rust_array_init.html#rust-arrays">Rust arrays</a></li>
+<li><a href="rust_array_init.html#rust-const">Rust const</a></li>
+<li><a href="rust_array_init.html#final-code">Final code</a></li>
+</ul>
+<h1 id="rust-arrays"><a class="header" href="#rust-arrays">Rust arrays</a></h1>
+<p>In rust the Arrays size is part of the type. This means that an <code>[u8; 10]</code> and an <code>[u8; 32]</code> are completely incompatible.
+In <code>C/C++</code> it is common practice to initialize an array with smaller data.</p>
+<pre><code class="language-C">/* char array of*/
+char DATA[32] = "Hello World";
+</code></pre>
+<p>Trying the same in rust:</p>
+<pre><pre class="playground"><code class="language-rust compile_fail"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub static DATA: [u8; 32] = *b"Hello World";
+<span class="boring">}</span></code></pre></pre>
+<pre><code class="language-ignore">   |
+5  | pub static Data: [u8; 32] = *b"Hello";
+   |                             ^^^^^^^^^ expected an array with a size of 32, 
+                                           found one with a size of 5
+</code></pre>
+<p>To my knowledge there is no way to to cast or automatically pad an array.
+However since we got <code>const</code> functions in rust we have a solution for this.</p>
+<h1 id="rust-const"><a class="header" href="#rust-const">Rust const</a></h1>
+<p><code>const</code> in rust is very similar to <code>constexpr</code> in <code>C++</code>. It is a completely different thing as <code>const</code> in <code>C</code>!!</p>
+<p>From the rust documentation about <code>const</code>:</p>
+<blockquote>
+<p>Compile-time constants, compile-time evaluable functions, and raw pointers.</p>
+</blockquote>
+<p>This means that, like macros, <code>const fn</code> will be evaluated at compile-time.
+Armed with this knowledge it is straight forward to write a rust function that will pad an array
+at compile-time:</p>
+<h1 id="final-code-1"><a class="header" href="#final-code-1">Final code</a></h1>
+<p>The code is very simple. Take an array of type <code>T</code> and length <code>N</code>.
+Append a <code>pad</code> value until the result is <code>M</code> long.</p>
+<p>Because this is a <code>const</code> function we can use it to create static variables.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// pad an array
+/// * `N` - size of the `input`` array
+/// * `M` - size of the `final`` array
+/// * `T` - type of the array
+/// * `pad` - value to use for padding
+///
+/// in most cases `T` can be omitted and will be inferred by the compiler.
+///
+/// `N` can be omitted and will be inferred if `#![feature(generic_arg_infer)]`
+/// is set.
+const fn pad_array&lt;const N: usize, const M: usize, T&gt;(input: [T; N], pad: T) -&gt; [T; M]
+where
+    T: Copy,
+{
+    let mut result = [pad; M];
+    let mut i = 0;
+    while i &lt; input.len() {
+        result[i] = input[i];
+        i += 1;
+    }
+    result
+}
+
+/// The type argument `T` will be inferred by the compiler
+/// without `#![feature(generic_arg_infer)]` ne have to pass the sizes explicitly
+pub static DATA_1: [u8; 32] = pad_array::&lt;11,32,_&gt;( *b"Hello World", 0u8);
+
+#![feature(generic_arg_infer)]
+/// with `#![feature(generic_arg_infer)]` all sizes will be inferred
+pub static DATA_2: [u8; 32] = pad_array::&lt;_,_,_&gt;( *b"Hello World", 0u8);
+
+<span class="boring">}</span></code></pre></pre>
+<p>Yes, it is very ugly. And calling it is even uglier. At least, on nightly, with <code>#![feature(generic_arg_infer)]</code>
+enabled we can omit all the type and size parameters.</p>
+<p>Maybe this could be nicer with macros? Lets see in the feature when I have more time :)</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="imprint-legal-disclosure"><a class="header" href="#imprint-legal-disclosure">Imprint (Legal Disclosure)</a></h1>
 <p>Information in accordance with <code>Section 5 TMG (German Telemedia Act)</code>:</p>
 <pre><code class="language-ignore">Eduard Stefes
 Emminger Str. 7
